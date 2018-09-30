@@ -39,14 +39,5 @@ public class Die
 	{
 		return "Die: " + this.getLastRoll();
 	}
-/*	public static void main(String[] args) {
-		Die d=new Die(new int[] {1,2,3,2,1});
-		for (int i=0; i<5;i++){
-			d.roll();
-		
-		StdOut.println(d.getLastRoll());
-		}
-	}
-	
-*/
+
 }
