@@ -9,8 +9,7 @@ public class SkunkApp {
 		Die die2=new Die(new int[] {2,3,4,2,3});
 		Dice dice1=new Dice(die1, die2);
 		for (int i=0; i<5;i++){
-			die1.roll();
-			die2.roll();
+			dice1.roll();
 		StdOut.println(dice1.getLastRoll());
 		}
 	}

@@ -10,10 +10,22 @@ public class TestPredictableDie {
 	}
 
 	@Test
-	public void test_predict1() {
+	public void test_first_roll() {
 		Die d=new Die(new int[] {1,2,3});
 		d.roll();
 		assertEquals(d.getLastRoll(),1);
 	}
+	
+	@Test
+	public void test_multiple_rolls() {
+		Die d=new Die(new int[] {1,2,3});
+		d.roll();
+		assertEquals(d.getLastRoll(),1);
+		d.roll();
+		assertEquals(d.getLastRoll(),2);
+		d.roll();
+		assertEquals(d.getLastRoll(),3);	
+	}
+	
 
 }
