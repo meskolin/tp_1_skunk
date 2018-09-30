@@ -1,4 +1,4 @@
-
+import edu.princeton.cs.introcs.StdOut;
 public class Die
 {
 	private int lastRoll;
@@ -44,7 +44,7 @@ public class Die
 		for (int i=0; i<5;i++){
 			d.roll();
 		
-		System.out.println(d.getLastRoll());
+		StdOut.println(d.getLastRoll());
 		}
 	}
 	
