@@ -23,14 +23,13 @@ public class Turn
 		rollSequence.add(this.lastRoll);
 	}
 	public void scoreTurn() {
-		Turn turn = new Turn(); 
-		if(turn.getLastRoll().isDoubleSkunk()) {
+		if(this.getLastRoll().isDoubleSkunk()) {
 			turnScore=0;
 		}
-		else if(turn.getLastRoll().isDeuceSkunk()) {
+		else if(this.getLastRoll().isDeuceSkunk()) {
 			turnScore=0;
 		}
-		else if(turn.getLastRoll().isSingleSkunk()) {
+		else if(this.getLastRoll().isSingleSkunk()) {
 			turnScore=0;
 		}
 		else
@@ -39,4 +38,5 @@ public class Turn
 	public boolean ends() {
 		return lastRoll.isDeuceSkunk()||lastRoll.isDoubleSkunk()||lastRoll.isSingleSkunk();
 	}
+	
 }
