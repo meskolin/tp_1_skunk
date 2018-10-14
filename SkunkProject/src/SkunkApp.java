@@ -6,7 +6,7 @@ public class SkunkApp implements Reporter
 
 	public static void main(String[] args)
 	{
-		StdOut.println("Welcome to 635 Skunk project! let's play!");
+		StdOut.println("Hello! Welcome to 635 Skunk project!");
 		
 		StdOut.println("Play one Turn for player1");
 		
@@ -43,7 +43,4 @@ public class SkunkApp implements Reporter
 		{
 			StdOut.println(msg);
 		}
-		
-	
-
 }
