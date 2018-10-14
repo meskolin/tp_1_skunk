@@ -9,7 +9,7 @@ import edu.princeton.cs.introcs.StdOut;
  * @author eric
  *
  */
- 
+
 public class Dice
 {
 	// Instance fields (variables) may be declared anywhere in class body
@@ -57,20 +57,33 @@ public class Dice
 
 	}
 
-	// the following method converts the internals of
-	// this Dice object, and returns a descriptive String:
-	//
-	// Roll of 7 => 4 + 3
-	//
-
 	public String toString()
 	{
 		return "Dice with last roll: " + getLastRoll() + " => " + die1.getLastRoll() + " + " + die2.getLastRoll();
 
 	}
 
-	// static methods can go anywhere - but at end is standard
+	public Die getDie1()
+	{
+		// TODO Auto-generated method stub
+		return this.die1;
+	}
 
+	public Die getDie2()
+	{
+		return this.die2;
+	}
+
+	public void setDie1(Die d)
+	{
+		this.die1 = d;
+	}
+
+	public void setDie2(Die d)
+	{
+		this.die2 = d;
+	}
+	
 	public static final int NUM_TRIALS = 360;
 
 	public static void main(String[] args)
@@ -82,7 +95,7 @@ public class Dice
 		{
 			dice1.roll();
 			StdOut.println(dice1);
-			
+
 			if (dice1.getLastRoll() == 2)
 				doubleSkunkCount++;
 		}
@@ -90,4 +103,5 @@ public class Dice
 		StdOut.println("Actual count: " + doubleSkunkCount);
 		StdOut.println("Expected count: " + (NUM_TRIALS / 36.0));
 	}
+
 }

@@ -1,39 +1,51 @@
-import edu.princeton.cs.introcs.StdOut;
+
 public class Die
 {
 	private int lastRoll;
-	private boolean isPredictable;
-	private int[] predictable;
-	private int nextPredict;
-	
+	private boolean predictible = false;
+	private int[] rolls;
+	private int index_of_next_roll;
+
 	public Die()
 	{
 		this.roll();
 	}
-	public Die(int[] predictable) {
-		this.isPredictable=true;
-		this.predictable=predictable;
-		this.nextPredict=0;//index of next value to use as roll
+
+	public Die(int[] predictable_rolls)
+	{
+		if (predictable_rolls == null)
+		{
+			throw new RuntimeException("null initializing int[] array");
+		}
+
+		this.predictible = true;
+		this.rolls = predictable_rolls;
+		this.index_of_next_roll = 0;
+
 	}
+
 	public int getLastRoll() // getter or accessor method
 	{
 
 		return this.lastRoll;
 	}
-	protected void setLastRoll(int lastRoll) // setter or mutator method
+
+	public void roll() // note how this changes Die's state, but doesn't return
+						// anything
 	{
-		this.lastRoll = lastRoll;
-	}
-	public void roll() // note how this changes Die's state, but doesn't return anything
-	{
-		if(isPredictable) {
-			this.lastRoll=predictable[nextPredict];
-			nextPredict++;
+		if (!predictible)
+			this.lastRoll = (int) (Math.random() * 6 + 1);
+		else
+		{
+			this.lastRoll = this.rolls[index_of_next_roll];
+			index_of_next_roll++;
+			if (index_of_next_roll >= this.rolls.length)
+			{
+				index_of_next_roll = 0; // back to start
+			}
 		}
-		else		
-			setLastRoll((int) (Math.random() * 6 + 1));
 	}
-	
+
 	@Override
 	public String toString() // this OVERRIDES the default Object.toString()
 	{
