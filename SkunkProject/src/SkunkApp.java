@@ -21,7 +21,7 @@ public class SkunkApp implements Reporter
 			if (!response.equals("n")) {
 				turn.rollAgain();
 				turn.scoreTurn();			
-				StdOut.println("You rolled a "+turn.getLastRoll().getDice().getDie1().getLastRoll() + "and a " +
+				StdOut.println("You rolled a "+turn.getLastRoll().getDice().getDie1().getLastRoll() + " and a " +
 						turn.getLastRoll().getDice().getDie2().getLastRoll());
 				
 				if (turn.ends()) {

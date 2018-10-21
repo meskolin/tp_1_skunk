@@ -6,7 +6,7 @@ public class Turn
 {
 	private int turnScore;
 	private Roll lastRoll;
-	private ArrayList<Roll> rollSequence;
+	protected ArrayList<Roll> rollSequence;
 	public Turn() {
 		this.turnScore=0;
 		this.lastRoll=null;
@@ -21,6 +21,7 @@ public class Turn
 	public void rollAgain() {
 		this.lastRoll=new Roll();
 		rollSequence.add(this.lastRoll);
+	
 	}
 	public void scoreTurn() {
 		if(this.getLastRoll().isDoubleSkunk()) {

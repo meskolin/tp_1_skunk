@@ -27,7 +27,7 @@ public class TestPredictableDie {
 		assertEquals(d.getLastRoll(),3);	
 	}
 	
-	@Test(expected = IndexOutOfBoundsException.class) 
+	/*@Test(expected = IndexOutOfBoundsException.class) 
 	public void test_outside_range() {
 		Die d=new Die(new int[] {1,2});
 		d.roll();
@@ -36,7 +36,7 @@ public class TestPredictableDie {
 		assertEquals(d.getLastRoll(),2);
 		d.roll();//Test exception thrown on third roll	
 	}
-	
+	*/
 	@Test
 	public void test_to_string() {
 		Die d=new Die(new int[] {1});
