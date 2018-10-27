@@ -7,7 +7,7 @@ public class Round {
 
 	ArrayList<Player> players;
 	Kitty roundKitty = new Kitty();
-	final int WINNING_SCORE = 20;
+	final int WINNING_SCORE = 50;
 
 	Round(ArrayList<Player> players) {
 		this.players = players;
@@ -52,13 +52,13 @@ public class Round {
 		activePlayer.setRoundScore(activePlayer.getRoundScore() + turnScore);
 		activePlayer.setChipCount(activePlayer.getChipCount() + turn.getChipChange());
 		roundKitty.setChipCount(roundKitty.getChipCount() + turn.getKittyChange());
-		StdOut.println("Player" + (activePlayer.name) + " scored: " + turnScore + " for this turn.");
+		StdOut.println("Player " + (activePlayer.name) + " scored: " + turnScore + " for this turn.");
 
 		StdOut.println(
-				"Player" + (activePlayer.name) + " scored: " + activePlayer.getRoundScore() + " for this round.");
+				"Player " + (activePlayer.name) + " scored: " + activePlayer.getRoundScore() + " for this round.");
 
 		StdOut.println(
-				"Player" + (activePlayer.name) + " has: " + activePlayer.getChipCount() + " chips after this turn.");
+				"Player " + (activePlayer.name) + " has: " + activePlayer.getChipCount() + " chips after this turn.");
 		StdOut.println("Kitty currently has: " + roundKitty.getChipCount() + " chips after this turn.");
 
 	}
@@ -76,7 +76,7 @@ public class Round {
 		// Last chance!!
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getRoundScore() < WINNING_SCORE) {
-				StdOut.println("Now player "+(i+1)+"'s last chance to win.");
+				StdOut.println("Now player "+players.get(i+1).name+"'s last chance to win.");
 				playTurn(players.get(i));
 			}
 		}
