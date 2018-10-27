@@ -13,7 +13,6 @@ public class Round {
 		this.players = players;
 	}
 
-	// TODO let other players roll one more time
 	public boolean roundDone() {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getRoundScore() >= WINNING_SCORE) {
