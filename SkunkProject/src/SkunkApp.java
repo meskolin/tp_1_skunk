@@ -24,9 +24,4 @@ public class SkunkApp {
 		
 	
 	}
-	@Override
-		public void showMessage(String msg) 
-		{
-			StdOut.println(msg);
-		}
 }
