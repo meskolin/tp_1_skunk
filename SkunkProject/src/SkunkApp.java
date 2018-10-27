@@ -3,8 +3,7 @@ import java.util.ArrayList;
 import edu.princeton.cs.introcs.StdIn;
 import edu.princeton.cs.introcs.StdOut;
 
-public class SkunkApp implements Reporter
-{
+public class SkunkApp {
 
 	public static void main(String[] args)
 	{
