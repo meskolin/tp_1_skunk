@@ -23,7 +23,7 @@ public class Round {
 	}
 
 	private void playTurn(Player activePlayer) {
-		StdOut.println("Play one Turn for player" + (activePlayer.name));
+		StdOut.println("Play one Turn for player: " + (activePlayer.name));
 		Turn turn = new Turn();
 		while (true) {
 			StdOut.println("Your current turn score is " + turn.getTurnScore());
@@ -76,6 +76,7 @@ public class Round {
 		// Last chance!!
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getRoundScore() < WINNING_SCORE) {
+				StdOut.println("Now player "+(i+1)+"'s last chance to win.");
 				playTurn(players.get(i));
 			}
 		}
