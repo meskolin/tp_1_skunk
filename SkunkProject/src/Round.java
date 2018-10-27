@@ -76,7 +76,7 @@ public class Round {
 		// Last chance!!
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getRoundScore() < WINNING_SCORE) {
-				StdOut.println("Now player "+players.get(i+1).name+"'s last chance to win.");
+				StdOut.println("Now player "+players.get(i).name+"'s last chance to win.");
 				playTurn(players.get(i));
 			}
 		}
@@ -84,7 +84,7 @@ public class Round {
 		moveChips(winner);
 	
 		StdOut.println("Player " + winner.name + " won the round with a score of " + winner.getRoundScore());
-		StdOut.println("Winner has " + winner.getChipCount() + " chips");
+		StdOut.println(winner.name+" has " + winner.getChipCount() + " chips");
 	}
 	
 	private Player findWinner() {
