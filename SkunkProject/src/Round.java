@@ -6,7 +6,7 @@ import edu.princeton.cs.introcs.StdOut;
 public class Round {
 
 	ArrayList<Player> players;
-	
+	Kitty roundKitty=new Kitty();
 	Round(ArrayList<Player> players){
 		this.players = players;
 	}
@@ -16,7 +16,7 @@ public class Round {
 		for (int i=0; i<players.size();i++) {
 		StdOut.println("Play one Turn for player"+(i+1));
 		Turn turn = new Turn(); 
-		
+		Player activePlayer=players.get(i);
 		while(true) {
 			StdOut.println("Your current turn score is " + turn.getTurnScore());
 			StdOut.println("Do you wanna roll? y or n (ENTER=>y)");
@@ -43,7 +43,11 @@ public class Round {
 			}
 		}
 		int turnScore=turn.getTurnScore();
+		activePlayer.setChipCount(activePlayer.getChipCount()+turn.getChipChange());
+		roundKitty.setChipCount(roundKitty.getChipCount()+turn.getKittyChange());
 		StdOut.println("Player"+(i+1)+ " scored: "+turnScore+" for this turn.");
+		StdOut.println("Player"+(i+1)+ " has: "+activePlayer.getChipCount()+" chips after this turn.");
+		StdOut.println("Kitty currently has: "+roundKitty.getChipCount()+" chips after this turn.");
 		}
 	}
 	

@@ -7,5 +7,11 @@ public class Player {
 
 	public int chipCount = 50;
 	public String name;
+	public int getChipCount() {
+		return chipCount;
+	}
+	public void setChipCount(int chipCount) {
+		this.chipCount = chipCount;
+	}
 }
 
