@@ -10,11 +10,13 @@ public class SkunkApp implements Reporter
 	{
 		StdOut.println("Hello! Welcome to 635 Skunk project!");
 		StdOut.println("Please enter the number of players: ");
-		int numPlayer=StdIn.readInt();
+		int numPlayer = Integer.parseInt((StdIn.readLine()));
 		ArrayList<String> playerList=new ArrayList<>(numPlayer);
-		for (int i=0; i<numPlayer; i++) {
-			StdOut.println("Please enter Player"+(i+1)+"'s name:");
-			String playerName=StdIn.readLine();
+		
+		for (int i=0; i < numPlayer; i++) {
+			StdOut.println("Please enter Player "+(i+1)+"'s name:");
+			StdOut.println();
+			String playerName = StdIn.readLine();
 			playerList.add(playerName);
 			StdOut.println(playerList);
 		}
