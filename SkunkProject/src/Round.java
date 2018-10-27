@@ -79,7 +79,36 @@ public class Round {
 				playTurn(players.get(i));
 			}
 		}
-
-	}
-
+		Player winner=players.get(0);
+		//find winner
+		for (int i=0; i<players.size()-1;i++) {
+			winner=players.get(i);
+			if (players.get(i+1).getRoundScore()>players.get(i).getRoundScore()) {
+				winner=players.get(i+1);
+			}
+			//winner gets kitty chips
+			winner.setChipCount(winner.getChipCount()+roundKitty.getChipCount());
+			
+			}
+		//winner collects chips
+		for (int i=0; i<players.size(); i++) {
+			if (players.get(i)!=winner) {
+				if(players.get(i).getRoundScore()==0) {
+					players.get(i).setChipCount(players.get(i).getChipCount()-10);
+					winner.setChipCount(winner.getChipCount()+10);
+				}
+				else {
+					players.get(i).setChipCount(players.get(i).getChipCount()-5);
+					winner.setChipCount(winner.getChipCount()+5);
+				}
+			}
+			
+		}
+			StdOut.println("Player "+winner.name+ " won the round with a score of "+ winner.getRoundScore());
+			StdOut.println("Winner has "+ winner.getChipCount()+" chips");
+		}
+		
 }
+		
+
+
