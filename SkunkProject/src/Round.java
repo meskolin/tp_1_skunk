@@ -93,14 +93,15 @@ public class Round {
 			if (players.get(i + 1).getRoundScore() > players.get(i).getRoundScore()) {
 				winner = players.get(i + 1);
 			}
-			// winner gets kitty chips
-			winner.setChipCount(winner.getChipCount() + roundKitty.getChipCount());
-
 		}
 		return winner;
 	}
+	
 	private void moveChips(Player winner) {
-		// winner collects chips
+		// winner gets kitty chips
+		winner.setChipCount(winner.getChipCount() + roundKitty.getChipCount());
+		
+		// winner collects chips from other players
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) != winner) {
 				if (players.get(i).getRoundScore() == 0) {
@@ -111,7 +112,6 @@ public class Round {
 					winner.setChipCount(winner.getChipCount() + 5);
 				}
 			}
-
 		}
 		
 	}
