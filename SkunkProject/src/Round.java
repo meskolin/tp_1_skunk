@@ -5,15 +5,14 @@ import edu.princeton.cs.introcs.StdOut;
 public class Round {
 
 	ArrayList<Player> players;
-	Turn currentTurn;
-	int activePlayerIndex = 0;
+	Turn currentTurn;	
 	Kitty roundKitty = new Kitty();
-	final int WINNING_SCORE = 50;
-	private ScoreBoard scoreBoard;
+	final int WINNING_SCORE = 30;
+	int activePlayerIndex = 0;
+	int firstWinnerIndex = 0;
 
-	Round(ArrayList<Player> players, ScoreBoard board) {
+	Round(ArrayList<Player> players) {
 		this.players = players;
-		this.scoreBoard = board;
 	}
 
 	public boolean roundDone() {
@@ -24,89 +23,96 @@ public class Round {
 		}
 		return false;
 	}
+	
+	public ResultSummary updateActivePlayer() {
+		ResultSummary response = new ResultSummary();
+		activePlayerIndex += 1;
+		if (activePlayerIndex > players.size() - 1) {
+			activePlayerIndex = 0;
+		}	
+		if (!roundDone()) {
+			response.setNextState(State.PLAYING_TURN);
+		} else {
+			response.setNextState(State.LAST_CHANCE);
+		}
+		response.setPlayerName(this.players.get(activePlayerIndex).name);
+		return response;
+	}
 
-	private State playTurnStep(Player activePlayer, String input) {
-		State nextState = State.PLAYING_TURN;		
+	private ResultSummary playTurnStep(Player activePlayer, String input) {
+		ResultSummary response = new ResultSummary();
+		response.setNextState(State.PLAYING_TURN);		
 		if(currentTurn == null) {
 			currentTurn = new Turn();
-			scoreBoard.startTurn(activePlayer, currentTurn.getTurnScore());
 		}
 		
 		int turnScore = currentTurn.getTurnScore();				
 		
 		if(input == null) {			
-			nextState =  State.WAITING_FOR_INPUT;
+			response.setNextState(State.WAITING_FOR_INPUT);
 		}		
 		else if (input.equals("y")) {
 			currentTurn.rollAgain();
 			currentTurn.scoreTurn();
-			scoreBoard.showRoll(currentTurn.getLastRoll());
+			response.setLastRoll(currentTurn.getLastRoll());
 			
 			turnScore = currentTurn.getTurnScore();
 			if (currentTurn.ends()) {
-				StdOut.println("Your turn is over :( \n");				
-				nextState = State.TURN_DONE;
+				response.setNextState(State.TURN_DONE);
 			} else {
-				scoreBoard.showTurnStatus(currentTurn.getTurnScore(), activePlayer.getRoundScore() + turnScore);
-				nextState = State.WAITING_FOR_INPUT;
+				response.setNextState(State.WAITING_FOR_INPUT);
 			}
 		} else if (input.equals("n")) {
-			StdOut.println("You declined a roll. \n");
-			nextState = State.TURN_DONE;
+			response.setNextState(State.TURN_DONE);
 		} else {
+			//TODO define an additional state for this?
 			StdOut.println("You entered an invalid response. \n");
-			nextState = State.WAITING_FOR_INPUT;
+			response.setNextState(State.WAITING_FOR_INPUT);
 		}
 		
-		if(nextState == State.TURN_DONE) {			
-			activePlayer.setRoundScore(activePlayer.getRoundScore() + turnScore);
+		
+		
+		
+		if(response.getNextState() == State.TURN_DONE) {
+			if(currentTurn.getLastRoll().isDoubleSkunk()) {
+				activePlayer.setRoundScore(0);
+			} else {
+				activePlayer.setRoundScore(activePlayer.getRoundScore() + turnScore);
+			}
 			activePlayer.setChipCount(activePlayer.getChipCount() + currentTurn.getChipChange());
 			roundKitty.setChipCount(roundKitty.getChipCount() + currentTurn.getKittyChange());
-			this.scoreBoard.showTurnScoreForPlayer(activePlayer, turnScore);
 			currentTurn = null;
 		}
+		response.setPlayerName(activePlayer.name);
+		response.setRoundScore(activePlayer.roundScore);
+		response.setTurnScore(turnScore);
 		
-		return nextState;
-	}
-
-	public State playRoundStep(String input) {
-		State next;
-		if (!roundDone()) {
-			next = singleTurn(input);
-		} else {
-			finishRound(input);
-			next = State.DONE;
-		}
-		return next;
+		return response;
 	}
 	
-	public State singleTurn(String input) {				
+	public ResultSummary playRoundStep(String input) {
 		Player active = players.get(activePlayerIndex);				
-		State next = playTurnStep(active, input);
-		if(next == State.TURN_DONE) {
-			activePlayerIndex += 1;
-			if(activePlayerIndex > players.size() -1) {
-				activePlayerIndex = 0;
-			}
-			next = State.PLAYING_TURN;
-		}
-		return next;
+		ResultSummary response = playTurnStep(active, input);
+		response.setPlayerName(active.name);		
+		return response;
 	}
 
-	private void finishRound(String input) {
-		// Last chance!!
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getRoundScore() < WINNING_SCORE) {
-				StdOut.println("Now player " + players.get(i).name + "'s last chance to win.");
-				playTurnStep(players.get(i), input);
-			}
-		}
-		Player winner = findWinner();
-		moveChips(winner);
-
-		StdOut.println("Player " + winner.name + " won the round with a score of " + winner.getRoundScore());
-		StdOut.println(winner.name + " has " + winner.getChipCount() + " chips");
-
+	public ResultSummary playLastChance(String input) { 
+		ResultSummary response;
+		if(activePlayerIndex != firstWinnerIndex) {
+			Player active = players.get(activePlayerIndex);	
+			response = playTurnStep(active, input);
+		} else {			
+			//last chances done!
+			response = new ResultSummary();
+			response.setNextState(State.DONE);
+			Player winner = findWinner();
+			moveChips(winner);
+			response.setWinnerName(winner.name);
+			response.setWinningChipCount(winner.getChipCount());
+			response.setWinningScore(winner.getRoundScore());
+		}				
+		return response;
 	}
 
 	private Player findWinner() {

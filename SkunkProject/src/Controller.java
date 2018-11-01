@@ -6,58 +6,45 @@ import edu.princeton.cs.introcs.StdOut;
 public class Controller {
 
 	Round round;
-	String lastResponse;	
 	public State currentState = State.NOT_STARTED;
-	public ScoreBoard scoreBoard;
-	  
-	public String getInput() {
-		return StdIn.readLine();
+	ArrayList<Player> players;
+	Kitty kitty;
+
+	public Controller(GameParams params) {
+		players = params.players;
+		kitty = new Kitty();
+		round = new Round(players);
+		currentState = State.PLAYING_TURN;
 	}
 	
-	public void showOutput(String message) {
-		StdOut.println(message);
-	}
-	
-	public void handleEvents() {
-		switch(currentState) {
-			case NOT_STARTED:
-				startGame();
-				currentState = State.PLAYING_TURN;
-			case PLAYING_TURN:
-				currentState = round.playRoundStep(lastResponse);
-				lastResponse = null;
+	public ResultSummary handleEvent(String input) {
+		ResultSummary result = new ResultSummary();
+		switch (currentState) {
+		case WAITING_FOR_INPUT:
+			if (input != null) {
+				result.setNextState(State.PLAYING_TURN);
+				currentState = result.getNextState();
+			} else {
+				// state stays the same
 				break;
-			case TURN_DONE:
-				//todo change when impl round
-				currentState = State.DONE;
-				break;
-			case WAITING_FOR_INPUT:
-				StdOut.println("Do you wanna roll? y or n (ENTER=>y) \n");
-				lastResponse = getInput();
-				currentState = State.PLAYING_TURN;
-				break;
-			case DONE:				
-				break;
+			}
+		case PLAYING_TURN:
+			result = round.playRoundStep(input);
+			currentState = result.getNextState();
+			break;
+		case TURN_DONE:
+			result = round.updateActivePlayer();	
+			currentState = result.getNextState();
+			break;
+		case LAST_CHANCE:
+			result = round.playLastChance(input);
+			currentState = result.getNextState();
+		case DONE:
+			break;
 		default:
-			break;				
-		}		
-	}
-	
-	public void startGame() {
-		StdOut.println("Hello! Welcome to 635 Skunk project!");
-		StdOut.println("Please enter the number of players: ");
-		int numPlayer = Integer.parseInt((StdIn.readLine()));
-		ArrayList<Player> playerList=new ArrayList<>(numPlayer);
-		
-		for (int i=0; i < numPlayer; i++) {
-			StdOut.println("Please enter Player "+(i+1)+"'s name:");
-			StdOut.println();
-			String playerName = StdIn.readLine();
-			playerList.add(new Player(playerName));
+			break;
 		}
-		Kitty kitty = new Kitty();
-		scoreBoard = new ScoreBoard(playerList, kitty);
-		round = new Round(playerList, scoreBoard);
-	}			
+		return result;
+	}		
 	
 }
