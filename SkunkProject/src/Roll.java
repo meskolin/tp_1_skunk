@@ -6,7 +6,7 @@ public class Roll
 	public Roll()
 	{
 		this.dice = new Dice();
-		this.dice.roll(); // forgot this in class
+		this.dice.roll();
 	}
 
 	public Dice getDice()

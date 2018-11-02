@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * GameParams represents all information needed to initialize a game
+ *
+ */
 public class GameParams {	
 	ArrayList<Player> players;
 

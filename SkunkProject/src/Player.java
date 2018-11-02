@@ -5,17 +5,22 @@ public class Player {
 		this.name = name;
 	}
 
-	public int chipCount = 50;
-	public int roundScore = 0; 
+	private int chipCount = 50;
+	private int roundScore = 0; 
+	private String name;
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getRoundScore() {
 		return roundScore;
 	}
 	public void setRoundScore(int roundScore) {
 		this.roundScore = roundScore;
-	}
-
-	public String name;
+	}	
 	
 	public int getChipCount() {
 		return chipCount;

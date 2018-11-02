@@ -1,5 +1,3 @@
-import edu.princeton.cs.introcs.StdOut;
-
 /**
  * Dice represents a single pair of rollable Die objects, randomly generating
  * sums of their two values
@@ -65,7 +63,6 @@ public class Dice
 
 	public Die getDie1()
 	{
-		// TODO Auto-generated method stub
 		return this.die1;
 	}
 
@@ -83,25 +80,4 @@ public class Dice
 	{
 		this.die2 = d;
 	}
-	
-	public static final int NUM_TRIALS = 360;
-
-	public static void main(String[] args)
-	{
-		Dice dice1 = new Dice();
-		int doubleSkunkCount = 0;
-
-		for (int i = 0; i < NUM_TRIALS; i++)
-		{
-			dice1.roll();
-			StdOut.println(dice1);
-
-			if (dice1.getLastRoll() == 2)
-				doubleSkunkCount++;
-		}
-
-		StdOut.println("Actual count: " + doubleSkunkCount);
-		StdOut.println("Expected count: " + (NUM_TRIALS / 36.0));
-	}
-
 }
