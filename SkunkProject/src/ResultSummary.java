@@ -12,27 +12,12 @@ public class ResultSummary {
 	}
 	public int roundScore;
 	public String playerName;
-	public String winnerName;
-	public int winningScore;
-	public int winningChipCount;
-	
-	public String getWinnerName() {
-		return winnerName;
+	public State currentState;
+	public State getCurrentState() {
+		return currentState;
 	}
-	public void setWinnerName(String winnerName) {
-		this.winnerName = winnerName;
-	}
-	public int getWinningScore() {
-		return winningScore;
-	}
-	public void setWinningScore(int winningScore) {
-		this.winningScore = winningScore;
-	}
-	public int getWinningChipCount() {
-		return winningChipCount;
-	}
-	public void setWinningChipCount(int winningChipCount) {
-		this.winningChipCount = winningChipCount;
+	public void setCurrentState(State currentState) {
+		this.currentState = currentState;
 	}
 	public State nextState;
 	
@@ -63,5 +48,27 @@ public class ResultSummary {
 	public void setRoll(Roll roll) {
 		this.lastRoll = roll;
 		
+	}
+	public String winnerName;
+	public int winningScore;
+	public int winningChipCount;
+	
+	public String getWinnerName() {
+		return winnerName;
+	}
+	public void setWinnerName(String winnerName) {
+		this.winnerName = winnerName;
+	}
+	public int getWinningScore() {
+		return winningScore;
+	}
+	public void setWinningScore(int winningScore) {
+		this.winningScore = winningScore;
+	}
+	public int getWinningChipCount() {
+		return winningChipCount;
+	}
+	public void setWinningChipCount(int winningChipCount) {
+		this.winningChipCount = winningChipCount;
 	}
 }

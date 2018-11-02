@@ -22,9 +22,6 @@ public class SkunkApp {
 				input = null;
 				if(control.currentState == State.WAITING_FOR_INPUT) {
 					input = ui.getTurnInput();
-				} else {
-					//Reset input
-					//input = null;					
 				}
 			}
 	

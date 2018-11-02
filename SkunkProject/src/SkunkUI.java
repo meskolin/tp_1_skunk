@@ -21,7 +21,11 @@ public class SkunkUI {
 	public void showResult(ResultSummary result) {
 		showOutput("*************************");
 		// Show turn related stuff
-		showOutput("Active Player:" + result.playerName);
+		if (result.currentState == State.PLAYING_TURN) {
+			showOutput("It is " + result.playerName + "'s turn");	
+			showOutput("Turn Score:" + result.turnScore);
+			showOutput("Round Score:" + result.roundScore);
+		}
 		if (result.getLastRoll() != null) {
 			showOutput("You rolled: " + result.getLastRoll().getDice().getDie1().getLastRoll() + " and "
 					+ result.getLastRoll().getDice().getDie2().getLastRoll());
@@ -34,29 +38,33 @@ public class SkunkUI {
 			}
 			
 		}
-		showOutput("Turn Score:" + result.turnScore);
-		showOutput("Round Score:" + result.roundScore);
+		
 		//Debug
-		//showOutput("Next state:" + result.nextState);
+		showOutput("Current state" + result.currentState);
+		showOutput("Next state:" + result.nextState);
 
+		if (result.nextState == State.INVALID_RESPONSE) {
+			showOutput("You entered an invalid response. \n");
+		}
+		
 		if (result.nextState == State.TURN_DONE) {
 			showOutput("Turn over for player " + result.playerName);
 		}
 		
 		if(result.nextState == State.LAST_CHANCE) {
-			showOutput("Now its the last chance to win!");
+			StdOut.println("Now its the chance to win!");
 		}
 		
 		if(result.nextState == State.DONE) {
 			showOutput("Player " + result.getWinnerName() + " won the round with a score of " + result.getWinningScore());
 			showOutput(result.getWinnerName() + " has " + result.getWinningChipCount() + " chips");
 		}
-		//Todo show kitty chips and round chips
+		//TODO Show other players chips and remaining kitty chips
 	}
 
 	public GameParams getGameParams() {
 		showOutput("Hello! Welcome to 635 Skunk project!");
-		showOutput("Please enter the number of players(>1): ");
+		showOutput("Please enter the number of players(2 or more): ");
 		int numPlayer = Integer.parseInt(StdIn.readLine());
 		ArrayList<Player> playerList = new ArrayList<>(numPlayer);
 

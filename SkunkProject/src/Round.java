@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import edu.princeton.cs.introcs.StdOut;
-
 public class Round {
 
 	ArrayList<Player> players;
@@ -65,13 +63,8 @@ public class Round {
 		} else if (input.equals("n")) {
 			response.setNextState(State.TURN_DONE);
 		} else {
-			//TODO define an additional state for this?
-			StdOut.println("You entered an invalid response. \n");
-			response.setNextState(State.WAITING_FOR_INPUT);
-		}
-		
-		
-		
+			response.setNextState(State.INVALID_RESPONSE);
+		}						
 		
 		if(response.getNextState() == State.TURN_DONE) {
 			if(currentTurn.getLastRoll().isDoubleSkunk()) {
@@ -90,7 +83,7 @@ public class Round {
 		return response;
 	}
 	
-	public ResultSummary playRoundStep(String input) {
+	public ResultSummary playTurnStep(String input) {
 		Player active = players.get(activePlayerIndex);				
 		ResultSummary response = playTurnStep(active, input);
 		response.setPlayerName(active.name);		
