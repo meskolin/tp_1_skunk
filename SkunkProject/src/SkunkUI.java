@@ -19,12 +19,7 @@ public class SkunkUI {
 	}
 
 	public void showResult(ResultSummary result) {
-		
-		// Debug
-		showOutput("Current state" + result.currentState);
-		showOutput("Next state:" + result.nextState);
 
-		
 		switch (result.getNextState()) {
 		case INVALID_RESPONSE:
 			showOutput("*************************");
@@ -64,7 +59,6 @@ public class SkunkUI {
 		default:
 			break;
 		}
-
 	}
 
 	private void showRoll(Roll roll) {
@@ -78,7 +72,7 @@ public class SkunkUI {
 			showOutput("You rolled a double skunk!  You lose your turn and round score :( ");
 		}
 	}
-	
+
 	public GameParams getGameParams() {
 		showOutput("Hello! Welcome to 635 Skunk project!");
 		showOutput("Please enter the number of players(2 or more): ");

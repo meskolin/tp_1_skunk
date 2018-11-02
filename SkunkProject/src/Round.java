@@ -3,7 +3,9 @@ import java.util.ArrayList;
 public class Round {
 
 	ArrayList<Player> players;
-	Turn currentTurn;	
+	ArrayList<Player> lastChancePlayers;
+	Turn currentTurn;
+	boolean lastChance = false;
 	Kitty roundKitty = new Kitty();
 	
 	/*
@@ -18,7 +20,7 @@ public class Round {
 	/*
 	 * Index of the first player to reach the winning score for the round
 	 */
-	int firstWinnerIndex = 0;
+	int firstWinnerIndex = -1;
 
 	Round(ArrayList<Player> players) {
 		this.players = players;
@@ -65,7 +67,7 @@ public class Round {
 			Player active = players.get(activePlayerIndex);
 			response = playTurnStep(active, input);
 		} else {
-			// last chances done!
+			 //last chances done!
 			response = new ResultSummary();
 			response.setNextState(State.DONE);
 			Player winner = findWinner();
@@ -129,19 +131,36 @@ public class Round {
 			activePlayer.setChipCount(activePlayer.getChipCount() + currentTurn.getChipChange());
 			roundKitty.setChipCount(roundKitty.getChipCount() + currentTurn.getKittyChange());
 			currentTurn = null;
+			if(!lastChance) {
+				checkForWinner();
+			}
 		}
 		response.setPlayerName(activePlayer.getName());
 		response.setRoundScore(activePlayer.getRoundScore());
 		response.setTurnScore(turnScore);
-		
+				
 		return response;
 	}
 
+	private void checkForWinner() {
+		if (players.get(activePlayerIndex).getRoundScore() >= WINNING_SCORE) {
+			firstWinnerIndex = activePlayerIndex;
+			lastChance = true;
+		}
+	}
+	
 	public boolean roundDone() {
 		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getRoundScore() >= WINNING_SCORE) {
+			if (players.get(i).getRoundScore() >= WINNING_SCORE) {				
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public boolean lastChanceDone() {
+		if( activePlayerIndex == firstWinnerIndex) {
+			return true;
 		}
 		return false;
 	}
@@ -154,8 +173,17 @@ public class Round {
 		}	
 		if (!roundDone()) {
 			response.setNextState(State.PLAYING_TURN);
-		} else {
+		} else if (lastChance == true && !lastChanceDone()){
 			response.setNextState(State.LAST_CHANCE);
+		} else {
+			response = new ResultSummary();
+			response.setNextState(State.DONE);
+			Player winner = findWinner();
+			moveChips(winner);
+			response.setWinnerName(winner.getName());
+			response.setWinningChipCount(winner.getChipCount());
+			response.setWinningScore(winner.getRoundScore());
+			response.setPlayers(players);			
 		}
 		response.setPlayerName(this.players.get(activePlayerIndex).getName());
 		return response;
