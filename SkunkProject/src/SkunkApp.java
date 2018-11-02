@@ -18,10 +18,7 @@ public class SkunkApp {
 			String playerName = StdIn.readLine();
 			playerList.add(new Player(playerName));
 		}
-		
-		Round round = new Round(playerList);
-		round.playRound();
-		
-	
+		Game game = new Game(playerList);
+		game.playGame();
 	}
 }

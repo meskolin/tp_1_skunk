@@ -7,7 +7,7 @@ public class Round {
 
 	ArrayList<Player> players;
 	Kitty roundKitty = new Kitty();
-	final int WINNING_SCORE = 50;
+	final int WINNING_SCORE = 12;
 
 	Round(ArrayList<Player> players) {
 		this.players = players;
@@ -85,6 +85,10 @@ public class Round {
 	
 		StdOut.println("Player " + winner.name + " won the round with a score of " + winner.getRoundScore());
 		StdOut.println(winner.name+" has " + winner.getChipCount() + " chips");
+		
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).setRoundScore(0);
+		}
 	}
 	
 	private Player findWinner() {
