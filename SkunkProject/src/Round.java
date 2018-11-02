@@ -5,8 +5,19 @@ public class Round {
 	ArrayList<Player> players;
 	Turn currentTurn;	
 	Kitty roundKitty = new Kitty();
-	final int WINNING_SCORE = 30;
+	
+	/*
+	 * Score at which a round is considered done
+	 */
+	final int WINNING_SCORE = 12;
+	
+	/*
+	 * Index of the currently active player
+	 */
 	int activePlayerIndex = 0;
+	/*
+	 * Index of the first player to reach the winning score for the round
+	 */
 	int firstWinnerIndex = 0;
 
 	Round(ArrayList<Player> players) {
@@ -14,13 +25,15 @@ public class Round {
 	}
 
 	private Player findWinner() {
+		int max = 0;
 		Player winner = players.get(0);
-		for (int i = 0; i < players.size() - 1; i++) {
-			winner = players.get(i);
-			if (players.get(i + 1).getRoundScore() > players.get(i).getRoundScore()) {
-				winner = players.get(i + 1);
+		for (int i = 0; i < players.size(); i++) {
+			if(players.get(i).getRoundScore() > max) {
+				winner = players.get(i);
+				firstWinnerIndex = i;
+				max = winner.getRoundScore();
 			}
-		}
+		}		
 		return winner;
 	}
 	
@@ -42,13 +55,17 @@ public class Round {
 		}
 	}
 
-	public ResultSummary playLastChance(String input) { 
+	/*
+	 * Plays one more turn for each player until the turn is done or input is required
+	 * 
+	 */
+	public ResultSummary playLastChance(String input) {
 		ResultSummary response;
-		if(activePlayerIndex != firstWinnerIndex) {
-			Player active = players.get(activePlayerIndex);	
+		if (activePlayerIndex != firstWinnerIndex) {
+			Player active = players.get(activePlayerIndex);
 			response = playTurnStep(active, input);
-		} else {			
-			//last chances done!
+		} else {
+			// last chances done!
 			response = new ResultSummary();
 			response.setNextState(State.DONE);
 			Player winner = findWinner();
@@ -56,10 +73,12 @@ public class Round {
 			response.setWinnerName(winner.getName());
 			response.setWinningChipCount(winner.getChipCount());
 			response.setWinningScore(winner.getRoundScore());
-		}				
+			response.setPlayers(players);
+		}
+
 		return response;
 	}
-	
+
 	public ResultSummary playTurnStep(String input) {
 		Player active = players.get(activePlayerIndex);				
 		ResultSummary response = playTurnStep(active, input);
@@ -67,6 +86,10 @@ public class Round {
 		return response;
 	}
 	
+	/*
+	 * Plays a turn for the active player until the turn is done or input is required
+	 * 
+	 */
 	private ResultSummary playTurnStep(Player activePlayer, String input) {
 		ResultSummary response = new ResultSummary();
 		response.setNextState(State.PLAYING_TURN);		
@@ -97,7 +120,8 @@ public class Round {
 		}						
 		
 		if(response.getNextState() == State.TURN_DONE) {
-			if(currentTurn.getLastRoll().isDoubleSkunk()) {
+			if((currentTurn.getLastRoll() != null) 
+					&& (currentTurn.getLastRoll().isDoubleSkunk())) {
 				activePlayer.setRoundScore(0);
 			} else {
 				activePlayer.setRoundScore(activePlayer.getRoundScore() + turnScore);

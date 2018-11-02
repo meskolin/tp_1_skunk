@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * 
  * Class holding data returned after the domain layer has taken some action
@@ -12,9 +14,19 @@ public class ResultSummary {
 	public String playerName;
 	public State currentState;
 	public State nextState;
+	
+	public ArrayList<Player> players;
+	
 	public String winnerName;
 	public int winningScore;
 	public int winningChipCount;
+	
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+	}
 	
 	public State getCurrentState() {
 		return currentState;

@@ -12,7 +12,7 @@ public class Game {
 	public boolean gameDone() {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getChipCount() >= WINNING_Chip) {
-				StdOut.println("Player "+players.get(i).name+" won the game. Congratulations!");
+				StdOut.println("Player "+players.get(i).getName()+" won the game. Congratulations!");
 				return true;
 			}
 		}

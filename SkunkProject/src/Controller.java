@@ -43,8 +43,9 @@ public class Controller {
 		default:
 			break;
 		}
-		//Advance to next state
+		
 		result.setCurrentState(currentState);
+		//Advance to next state
 		currentState = result.getNextState();
 
 		return result;

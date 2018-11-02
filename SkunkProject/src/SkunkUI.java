@@ -19,49 +19,66 @@ public class SkunkUI {
 	}
 
 	public void showResult(ResultSummary result) {
-		showOutput("*************************");
-		// Show turn related stuff
-		if (result.currentState == State.PLAYING_TURN) {
-			showOutput("It is " + result.playerName + "'s turn");	
-			showOutput("Turn Score:" + result.turnScore);
-			showOutput("Round Score:" + result.roundScore);
-		}
-		if (result.getLastRoll() != null) {
-			showOutput("You rolled: " + result.getLastRoll().getDice().getDie1().getLastRoll() + " and "
-					+ result.getLastRoll().getDice().getDie2().getLastRoll());
-			if(result.getLastRoll().isSingleSkunk()) {
-				showOutput("You rolled a single skunk! You lose your turn score :( ");
-			} else if (result.getLastRoll().isDeuceSkunk()) {
-				showOutput("You rolled a deuce skunk!  You lose your turn score :( ");
-			} else if( result.getLastRoll().isDoubleSkunk()) {
-				showOutput("You rolled a double skunk!  You lose your turn and round score :( ");
-			}
-			
-		}
 		
-		//Debug
+		// Debug
 		showOutput("Current state" + result.currentState);
 		showOutput("Next state:" + result.nextState);
 
-		if (result.nextState == State.INVALID_RESPONSE) {
+		
+		switch (result.getNextState()) {
+		case INVALID_RESPONSE:
+			showOutput("*************************");
 			showOutput("You entered an invalid response. \n");
-		}
-		
-		if (result.nextState == State.TURN_DONE) {
+			break;
+		case WAITING_FOR_INPUT:
+			showOutput("*************************");
+			showOutput("It is " + result.playerName + "'s turn");
+			if (result.getLastRoll() != null) {
+				showRoll(result.getLastRoll());
+			}							
+			showOutput("Turn Score:" + result.turnScore);
+			showOutput("Round Score:" + result.roundScore);
+			break;
+		case TURN_DONE:
+			showOutput("*************************");
+			if (result.getLastRoll() != null) {
+				showRoll(result.getLastRoll());
+			}
 			showOutput("Turn over for player " + result.playerName);
-		}
-		
-		if(result.nextState == State.LAST_CHANCE) {
-			StdOut.println("Now its the chance to win!");
-		}
-		
-		if(result.nextState == State.DONE) {
-			showOutput("Player " + result.getWinnerName() + " won the round with a score of " + result.getWinningScore());
+			showOutput("Turn Score:" + result.turnScore);
+			showOutput("Round Score:" + result.roundScore);
+			break;
+		case LAST_CHANCE:
+			showOutput("*************************");
+			StdOut.println("Now its the last chance to win!");
+			break;
+		case DONE:
+			showOutput("*************************");
+			showOutput(
+					"Player " + result.getWinnerName() + " won the round with a score of " + result.getWinningScore());
 			showOutput(result.getWinnerName() + " has " + result.getWinningChipCount() + " chips");
+			showOutput("Final chip counts: ");
+			for (int i = 0; i < result.players.size(); i++) {
+				showOutput(result.players.get(i).getName() + ": " + result.players.get(i).getChipCount());
+			}
+		default:
+			break;
 		}
-		//TODO Show other players chips and remaining kitty chips
+
 	}
 
+	private void showRoll(Roll roll) {
+		showOutput("You rolled: " + roll.getDice().getDie1().getLastRoll() + " and "
+				+ roll.getDice().getDie2().getLastRoll());
+		if (roll.isSingleSkunk()) {
+			showOutput("You rolled a single skunk! You lose your turn score :( ");
+		} else if (roll.isDeuceSkunk()) {
+			showOutput("You rolled a deuce skunk!  You lose your turn score :( ");
+		} else if (roll.isDoubleSkunk()) {
+			showOutput("You rolled a double skunk!  You lose your turn and round score :( ");
+		}
+	}
+	
 	public GameParams getGameParams() {
 		showOutput("Hello! Welcome to 635 Skunk project!");
 		showOutput("Please enter the number of players(2 or more): ");
