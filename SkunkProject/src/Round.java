@@ -7,7 +7,7 @@ public class Round {
 
 	ArrayList<Player> players;
 	Kitty roundKitty = new Kitty();
-	final int WINNING_SCORE = 12;
+	final int WINNING_SCORE = 50;
 
 	Round(ArrayList<Player> players) {
 		this.players = players;
