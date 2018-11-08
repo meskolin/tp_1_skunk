@@ -9,5 +9,6 @@
 			<attribute name="javadoc_location" value="https://introcs.cs.princeton.edu/java/stdlib/javadoc"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/mockito-all-2.0.2-beta.jar">	
 	<classpathentry kind="output" path="bin"/>
 </classpath>

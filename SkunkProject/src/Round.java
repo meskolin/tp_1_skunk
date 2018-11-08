@@ -26,7 +26,7 @@ public class Round {
 		this.players = players;
 	}
 
-	private Player findWinner() {
+	public Player findWinner() {
 		int max = 0;
 		Player winner = players.get(0);
 		for (int i = 0; i < players.size(); i++) {
@@ -39,7 +39,7 @@ public class Round {
 		return winner;
 	}
 	
-	private void moveChips(Player winner) {
+	public void moveChips(Player winner) {
 		// winner gets kitty chips
 		winner.setChipCount(winner.getChipCount() + roundKitty.getChipCount());
 
