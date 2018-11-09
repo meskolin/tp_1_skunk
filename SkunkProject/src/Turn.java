@@ -8,6 +8,7 @@ public class Turn
 	public int chipChange=0;
 	public int kittyChange=0;
 	private Roll lastRoll;
+
 	protected ArrayList<Roll> rollSequence;
 	public Turn() {
 		this.turnScore=0;
@@ -22,6 +23,10 @@ public class Turn
 	}
 	public int getKittyChange() {
 		return this.kittyChange;	
+	}
+	
+	public void setLastRoll(Roll lastRoll) {
+		this.lastRoll = lastRoll;
 	}
 	
 	public Roll getLastRoll() {
