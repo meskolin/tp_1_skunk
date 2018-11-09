@@ -1,4 +1,5 @@
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,12 +10,6 @@ public class TurnTest
 	@Before
 	public void setUp() throws Exception
 	{
-	}
-
-	@Test
-	public void create_new_Turn()
-	{
-		Turn new_turn = new Turn();
 	}
 
 	@Test
@@ -48,35 +43,54 @@ public class TurnTest
 		assertNotEquals("last_roll",null, new_turn.getLastRoll());
 	}
 	
+
 	@Test
-	public void skunk_scores_zero() {
-		Turn new_turn = new Turn();
-		for (int i=0;i<100;i++) {
-		new_turn.rollAgain();
-		if (new_turn.getLastRoll().isDoubleSkunk()) {
-			new_turn.scoreTurn();
-			assertEquals("double_skunk_scores_0", 0, new_turn.getTurnScore());
-			assertTrue("is_a_skunk", new_turn.ends());
-		}
-		else if(new_turn.getLastRoll().isDeuceSkunk()) {
-			new_turn.scoreTurn();
-			assertEquals("deuce_skunk_scores_0", 0, new_turn.getTurnScore());
-			assertTrue("is_a_skunk", new_turn.ends());
-		}
-		else if(new_turn.getLastRoll().isSingleSkunk()) {
-			new_turn.scoreTurn();
-			assertEquals("single_skunk_scores_0", 0, new_turn.getTurnScore());
-			assertTrue("is_a_skunk", new_turn.ends());
-		}
-		else {
-			new_turn.scoreTurn();
-			assertNotEquals("not_a_skunk", 0, new_turn.getTurnScore());
-			assertFalse("is_not_skunk", new_turn.ends());
-		}
-		}
-		
+	public void testTurnScoringPoints() {
+		Turn turn = new Turn();		
+		Die die1 = new Die(new int[] {2});
+		Die die2 = new Die(new int[] {3});
+		Roll roll = new Roll();
+		roll.setDice(die1, die2);		
+		turn.setLastRoll(roll);	
+		turn.scoreTurn();
+		assertEquals(5, turn.getTurnScore());
+		assertEquals(false, turn.ends());
 	}
 	
+	@Test
+	public void double_skunk_scores_zero() {
+		Turn turn = new Turn();		
+		Roll roll = mock(Roll.class);
+		when(roll.isDoubleSkunk()).thenReturn(true);		
+		turn.setLastRoll(roll);	
+		turn.scoreTurn();
+		assertEquals(true, turn.getLastRoll().isDoubleSkunk());
+		assertEquals(0, turn.getTurnScore());
+		assertEquals(true, turn.ends());
+	}
 	
+	@Test
+	public void single_skunk_scores_zero() {
+		Turn turn = new Turn();		
+		Roll roll = mock(Roll.class);
+		when(roll.isSingleSkunk()).thenReturn(true);		
+		turn.setLastRoll(roll);	
+		turn.scoreTurn();
+		assertEquals(true, turn.getLastRoll().isSingleSkunk());
+		assertEquals(0, turn.getTurnScore());
+		assertEquals(true, turn.ends());
+	}
+	
+	@Test
+	public void deuce_skunk_scores_zero() {
+		Turn turn = new Turn();		
+		Roll roll = mock(Roll.class);
+		when(roll.isDeuceSkunk()).thenReturn(true);		
+		turn.setLastRoll(roll);	
+		turn.scoreTurn();
+		assertEquals(true, turn.getLastRoll().isDeuceSkunk());
+		assertEquals(0, turn.getTurnScore());
+		assertEquals(true, turn.ends());
+	}				
 
 }
