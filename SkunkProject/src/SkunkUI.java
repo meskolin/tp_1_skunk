@@ -47,7 +47,7 @@ public class SkunkUI {
 			showOutput("*************************");
 			StdOut.println("Now its the last chance to win!");
 			break;
-		case DONE:
+		case ROUND_DONE:
 			showOutput("*************************");
 			showOutput(
 					"Player " + result.getWinnerName() + " won the round with a score of " + result.getWinningScore());
@@ -56,6 +56,10 @@ public class SkunkUI {
 			for (int i = 0; i < result.players.size(); i++) {
 				showOutput(result.players.get(i).getName() + ": " + result.players.get(i).getChipCount());
 			}
+			break;
+		case GAME_DONE:
+			showOutput("*************************");
+			showOutput("Player "+ result.getGameWinnerName() +" won the game. Congratulations!");
 		default:
 			break;
 		}

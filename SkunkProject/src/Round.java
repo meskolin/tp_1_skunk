@@ -11,7 +11,7 @@ public class Round {
 	/*
 	 * Score at which a round is considered done
 	 */
-	final int WINNING_SCORE = 12;
+	final int WINNING_SCORE = 100;
 	
 	/*
 	 * Index of the currently active player
@@ -25,7 +25,7 @@ public class Round {
 	Round(ArrayList<Player> players) {
 		this.players = players;
 		//Start round score at zero
-		for(int i =0 ; i< players.size(), i++) {
+		for(int i =0 ; i< players.size(); i++) {
 			players.get(i).setRoundScore(0);
 		}
 	}
@@ -73,7 +73,7 @@ public class Round {
 		} else {
 			 //last chances done!
 			response = new ResultSummary();
-			response.setNextState(State.DONE);
+			response.setNextState(State.ROUND_DONE);
 			Player winner = findWinner();
 			moveChips(winner);
 			response.setWinnerName(winner.getName());
@@ -181,7 +181,7 @@ public class Round {
 			response.setNextState(State.LAST_CHANCE);
 		} else {
 			response = new ResultSummary();
-			response.setNextState(State.DONE);
+			response.setNextState(State.ROUND_DONE);
 			Player winner = findWinner();
 			moveChips(winner);
 			response.setWinnerName(winner.getName());

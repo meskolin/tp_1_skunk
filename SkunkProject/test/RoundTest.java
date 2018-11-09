@@ -115,7 +115,7 @@ public class RoundTest
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		when(turn.ends()).thenReturn(true);	
 		ResultSummary result = this.round.playLastChance("y");		
-		assertEquals(State.DONE, result.getNextState());
+		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 	
 	@Test
@@ -182,7 +182,7 @@ public class RoundTest
 		round.activePlayerIndex = 2;		
 		ResultSummary result = round.updateActivePlayer();
 		assertEquals(round.activePlayerIndex, 0);	
-		assertEquals(State.DONE, result.getNextState());
+		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 
 

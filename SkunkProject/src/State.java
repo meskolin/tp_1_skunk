@@ -10,5 +10,6 @@ public enum State {
 	       INVALID_RESPONSE, 
 	       TURN_DONE, 
 	       LAST_CHANCE, 
-	       DONE
+	       ROUND_DONE,
+	       GAME_DONE
 	   }

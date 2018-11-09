@@ -9,7 +9,7 @@ public class SkunkApp {
 		Controller control = new Controller(params);
 		ResultSummary result;
 
-		while (control.currentState != State.DONE) {
+		while (control.currentState != State.GAME_DONE) {
 			// Do one tick and show the result
 			result = control.handleEvent(input);
 			ui.showResult(result);

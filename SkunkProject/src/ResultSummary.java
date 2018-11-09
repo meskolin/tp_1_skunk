@@ -18,9 +18,16 @@ public class ResultSummary {
 	public ArrayList<Player> players;
 	
 	public String winnerName;
+	public String gameWinnerName;
 	public int winningScore;
 	public int winningChipCount;
 	
+	public String getGameWinnerName() {
+		return gameWinnerName;
+	}
+	public void setGameWinnerName(String gameWinnerName) {
+		this.gameWinnerName = gameWinnerName;
+	}
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}

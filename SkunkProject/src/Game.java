@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import edu.princeton.cs.introcs.StdOut;
-
 public class Game {
 	ArrayList<Player> players;
 	final int WINNING_Chip = 100;
@@ -12,17 +10,20 @@ public class Game {
 	public boolean gameDone() {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getChipCount() >= WINNING_Chip) {
-				StdOut.println("Player "+players.get(i).getName()+" won the game. Congratulations!");
 				return true;
 			}
 		}
 		return false;
 	}
-	public void playGame() {
-		while (!gameDone()) {
-				Round round=new Round(players);
-				//round.playRound();			
-			}
+	
+	public String getWinner() {
+		String winner = "";
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getChipCount() >= WINNING_Chip) {
+				winner += players.get(i).getName();
+			}	
+		}
+		return winner;
 	}
 }
 
