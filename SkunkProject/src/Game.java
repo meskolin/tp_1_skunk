@@ -18,19 +18,12 @@ public class Game {
 		}
 		return false;
 	}
-
-//	public void playGame() {
-//		while (!gameDone()) {
-//				Round round=new Round(players);
-//				round.playRound();
-//				for (int i=0; i<players.size();i++) {
-//					Player active=players.get(i);
-//					if (active.getChipCount() >= WINNING_Chip) {
-//						break;
-//				}
-//			}
-//		}
-//	}
+	public void playGame() {
+		while (!gameDone()) {
+				Round round=new Round(players);
+				//round.playRound();			
+			}
+	}
 }
 
 

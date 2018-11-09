@@ -24,6 +24,10 @@ public class Round {
 
 	Round(ArrayList<Player> players) {
 		this.players = players;
+		//Start round score at zero
+		for(int i =0 ; i< players.size(), i++) {
+			players.get(i).setRoundScore(0);
+		}
 	}
 
 	public Player findWinner() {
