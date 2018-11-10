@@ -101,7 +101,8 @@ public class RoundTest
 		round.firstWinnerIndex = 0;
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		when(turn.ends()).thenReturn(true);	
-		ResultSummary result = this.round.playLastChance("y");		
+		round.lastChance = true;
+		ResultSummary result = this.round.playTurnStep("y");		
 		assertEquals(State.TURN_DONE, result.getNextState());
 	}
 	
@@ -114,7 +115,8 @@ public class RoundTest
 		round.firstWinnerIndex = round.activePlayerIndex;
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		when(turn.ends()).thenReturn(true);	
-		ResultSummary result = this.round.playLastChance("y");		
+		round.lastChance = true;
+		ResultSummary result = this.round.determineNextState();
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 	
@@ -157,31 +159,32 @@ public class RoundTest
 	public void testUpdateActivePlayer()
 	{
 		assertEquals(round.activePlayerIndex, 0);
-		ResultSummary result = round.updateActivePlayer();
+		round.updateActivePlayer();
 		assertEquals(round.activePlayerIndex, 1);	
-		assertEquals(State.PLAYING_TURN, result.getNextState());
 	}
 	
 	@Test
-	public void testUpdateActivePlayerLastChance()
+	public void testDetermineStateLastChance()
 	{
 		round.lastChance = true;
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		assertEquals(round.activePlayerIndex, 0);
-		ResultSummary result = round.updateActivePlayer();
-		assertEquals(round.activePlayerIndex, 1);	
+		round.playTurnStep("y");
+		round.updateActivePlayer();
+		ResultSummary result = round.determineNextState();
 		assertEquals(State.LAST_CHANCE, result.getNextState());
 	}
 	
 	@Test
-	public void testUpdateActivePlayerLastChanceDone()
+	public void testDetermineStateLastChanceDone()
 	{
 		round.lastChance = true;
 		round.firstWinnerIndex = 0;
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
-		round.activePlayerIndex = 2;		
-		ResultSummary result = round.updateActivePlayer();
-		assertEquals(round.activePlayerIndex, 0);	
+		round.activePlayerIndex = 2;
+		
+		round.updateActivePlayer();
+		ResultSummary result = round.determineNextState();
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 
