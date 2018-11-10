@@ -33,10 +33,11 @@ public class Controller {
 			result = round.playTurnStep(input);
 			break;
 		case TURN_DONE:
-			result = round.updateActivePlayer();	
+			round.updateActivePlayer();
+			result = round.determineNextState();
 			break;
 		case LAST_CHANCE:
-			result = round.playLastChance(input);
+			result = round.playTurnStep(input);
 			break;
 		case ROUND_DONE:
 			if(!game.gameDone()) {
@@ -46,8 +47,6 @@ public class Controller {
 				result.setGameWinnerName(game.getWinner());
 				result.setNextState(State.GAME_DONE);
 			}
-			break;
-		case GAME_DONE:
 			break;
 		default:
 			break;

@@ -61,30 +61,6 @@ public class Round {
 		}
 	}
 
-	/*
-	 * Plays one more turn for each player until the turn is done or input is required
-	 * 
-	 */
-	public ResultSummary playLastChance(String input) {
-		ResultSummary response;
-		if (activePlayerIndex != firstWinnerIndex) {
-			Player active = players.get(activePlayerIndex);
-			response = playTurnStep(active, input);
-		} else {
-			 //last chances done!
-			response = new ResultSummary();
-			response.setNextState(State.ROUND_DONE);
-			Player winner = findWinner();
-			moveChips(winner);
-			response.setWinnerName(winner.getName());
-			response.setWinningChipCount(winner.getChipCount());
-			response.setWinningScore(winner.getRoundScore());
-			response.setPlayers(players);
-		}
-
-		return response;
-	}
-
 	public ResultSummary playTurnStep(String input) {
 		Player active = players.get(activePlayerIndex);				
 		ResultSummary response = playTurnStep(active, input);
@@ -169,12 +145,15 @@ public class Round {
 		return false;
 	}
 
-	public ResultSummary updateActivePlayer() {
-		ResultSummary response = new ResultSummary();
+	public void updateActivePlayer() {	
 		activePlayerIndex += 1;
 		if (activePlayerIndex > players.size() - 1) {
 			activePlayerIndex = 0;
 		}	
+	}
+	
+	public ResultSummary determineNextState(){
+		ResultSummary response = new ResultSummary();
 		if (!roundDone()) {
 			response.setNextState(State.PLAYING_TURN);
 		} else if (lastChance == true && !lastChanceDone()){
