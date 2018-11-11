@@ -29,7 +29,7 @@ public class TestController {
 	@Test
 	public void testControllerHandlesInvalidResponse() {
 		control.currentState = State.INVALID_RESPONSE; 
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
 	}
 	
@@ -42,14 +42,14 @@ public class TestController {
 		when(round.playTurnStep("y")).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.handleEvent("y");
+		ResultSummary result = control.doNextStep("y");
 		assertEquals(State.TURN_DONE, result.getNextState());
 	}
 	
 	@Test
 	public void testControllerHandlesWaitForInputNull() {
 		control.currentState = State.WAITING_FOR_INPUT; 
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
 	}
 	
@@ -62,7 +62,7 @@ public class TestController {
 		when(round.determineNextState()).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 	
@@ -71,14 +71,14 @@ public class TestController {
 		control.currentState = State.ROUND_DONE; 
 		players.get(0).setChipCount(100);
 		
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.GAME_DONE, result.getNextState());
 	}
 	
 	@Test
 	public void testControllerStartNewRound() {
 		control.currentState = State.ROUND_DONE; 		
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.PLAYING_TURN, result.getNextState());
 	}
 	
@@ -91,7 +91,7 @@ public class TestController {
 		when(round.playTurnStep(null)).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.handleEvent(null);
+		ResultSummary result = control.doNextStep(null);
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 }

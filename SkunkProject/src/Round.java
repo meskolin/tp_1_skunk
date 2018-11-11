@@ -3,8 +3,10 @@ import java.util.ArrayList;
 public class Round {
 
 	ArrayList<Player> players;
-	ArrayList<Player> lastChancePlayers;
 	Turn currentTurn;
+	/*
+	 * Flag representing if round is in last chance stage
+	 */
 	boolean lastChance = false;
 	Kitty roundKitty = new Kitty();
 	
@@ -152,6 +154,9 @@ public class Round {
 		}	
 	}
 	
+	/*
+	 * Get the next state based on round status
+	 */
 	public ResultSummary determineNextState(){
 		ResultSummary response = new ResultSummary();
 		if (!roundDone()) {
@@ -159,11 +164,10 @@ public class Round {
 		} else if (lastChance == true && !lastChanceDone()){
 			response.setNextState(State.LAST_CHANCE);
 		} else {
-			response = new ResultSummary();
 			response.setNextState(State.ROUND_DONE);
 			Player winner = findWinner();
 			moveChips(winner);
-			response.setWinnerName(winner.getName());
+			response.setGameWinnerName(winner.getName());
 			response.setWinningChipCount(winner.getChipCount());
 			response.setWinningScore(winner.getRoundScore());
 			response.setPlayers(players);			

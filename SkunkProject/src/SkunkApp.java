@@ -11,7 +11,7 @@ public class SkunkApp {
 
 		while (control.currentState != State.GAME_DONE) {
 			// Do one tick and show the result
-			result = control.handleEvent(input);
+			result = control.doNextStep(input);
 			ui.showResult(result);
 			input = null;
 			if (control.currentState == State.WAITING_FOR_INPUT) {

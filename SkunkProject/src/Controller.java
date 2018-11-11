@@ -14,7 +14,7 @@ public class Controller {
 		currentState = State.PLAYING_TURN;
 	}
 	
-	public ResultSummary handleEvent(String input) {
+	public ResultSummary doNextStep(String input) {
 		ResultSummary result = new ResultSummary();		
 		switch (currentState) {
 		case INVALID_RESPONSE:

@@ -5,10 +5,6 @@ import edu.princeton.cs.introcs.StdOut;
 
 public class SkunkUI {
 
-	public String getInput() {
-		return StdIn.readLine();
-	}
-
 	public String getTurnInput() {
 		showOutput("Do you want to roll? (y/n): ");
 		return StdIn.readLine();
@@ -27,21 +23,21 @@ public class SkunkUI {
 			break;
 		case WAITING_FOR_INPUT:
 			showOutput("*************************");
-			showOutput("It is " + result.playerName + "'s turn");
+			showOutput("It is " + result.getPlayerName() + "'s turn");
 			if (result.getLastRoll() != null) {
 				showRoll(result.getLastRoll());
 			}							
-			showOutput("Turn Score:" + result.turnScore);
-			showOutput("Round Score:" + result.roundScore);
+			showOutput("Turn Score:" + result.getTurnScore());
+			showOutput("Round Score:" + result.getRoundScore());
 			break;
 		case TURN_DONE:
 			showOutput("*************************");
 			if (result.getLastRoll() != null) {
 				showRoll(result.getLastRoll());
 			}
-			showOutput("Turn over for player " + result.playerName);
-			showOutput("Turn Score:" + result.turnScore);
-			showOutput("Round Score:" + result.roundScore);
+			showOutput("Turn over for player " + result.getPlayerName());
+			showOutput("Turn Score:" + result.getTurnScore());
+			showOutput("Round Score:" + result.getRoundScore());
 			break;
 		case LAST_CHANCE:
 			showOutput("*************************");
@@ -50,11 +46,11 @@ public class SkunkUI {
 		case ROUND_DONE:
 			showOutput("*************************");
 			showOutput(
-					"Player " + result.getWinnerName() + " won the round with a score of " + result.getWinningScore());
-			showOutput(result.getWinnerName() + " has " + result.getWinningChipCount() + " chips");
+					"Player " + result.getRoundWinnerName() + " won the round with a score of " + result.getWinningScore());
+			showOutput(result.getRoundWinnerName() + " has " + result.getWinningChipCount() + " chips");
 			showOutput("Final chip counts: ");
-			for (int i = 0; i < result.players.size(); i++) {
-				showOutput(result.players.get(i).getName() + ": " + result.players.get(i).getChipCount());
+			for (int i = 0; i < result.getPlayers().size(); i++) {
+				showOutput(result.getPlayers().get(i).getName() + ": " + result.getPlayers().get(i).getChipCount());
 			}
 			break;
 		case GAME_DONE:

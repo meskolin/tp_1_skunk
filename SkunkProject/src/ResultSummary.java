@@ -7,20 +7,20 @@ import java.util.ArrayList;
  */
 public class ResultSummary {
 
-	public int turnScore;
-	public Roll lastRoll;
+	private int turnScore;
+	private Roll lastRoll;
 	
-	public int roundScore;
-	public String playerName;
-	public State currentState;
-	public State nextState;
+	private int roundScore;
+	private String playerName;
+	private State currentState;
+	private State nextState;
 	
-	public ArrayList<Player> players;
+	private ArrayList<Player> players;
 	
-	public String winnerName;
-	public String gameWinnerName;
-	public int winningScore;
-	public int winningChipCount;
+	private String roundWinnerName;
+	private String gameWinnerName;
+	private int winningScore;
+	private int winningChipCount;
 	
 	public String getGameWinnerName() {
 		return gameWinnerName;
@@ -53,8 +53,8 @@ public class ResultSummary {
 	public int getTurnScore() {
 		return turnScore;
 	}
-	public String getWinnerName() {
-		return winnerName;
+	public String getRoundWinnerName() {
+		return roundWinnerName;
 	}
 	public int getWinningChipCount() {
 		return winningChipCount;
@@ -84,8 +84,8 @@ public class ResultSummary {
 	public void setTurnScore(int turnScore) {
 		this.turnScore = turnScore;
 	}
-	public void setWinnerName(String winnerName) {
-		this.winnerName = winnerName;
+	public void setRoundWinnerName(String winnerName) {
+		this.roundWinnerName = winnerName;
 	}
 	public void setWinningChipCount(int winningChipCount) {
 		this.winningChipCount = winningChipCount;
