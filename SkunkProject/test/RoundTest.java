@@ -29,7 +29,6 @@ public class RoundTest
 		assertEquals(round.currentTurn, null);
 		ResultSummary result = this.round.playTurnStep(true);
 		assertNotNull(round.currentTurn);
-		assertEquals(State.PLAYING_TURN, result.getNextState());
 	}
 	
 	@Test
