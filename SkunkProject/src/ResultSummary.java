@@ -11,14 +11,16 @@ public class ResultSummary {
 	private Roll lastRoll;
 	
 	private int roundScore;
-	private String playerName;
+	
 	private State currentState;
 	private State nextState;
 	
 	private ArrayList<Player> players;
 	
+	private String activePlayerName;
 	private String roundWinnerName;
 	private String gameWinnerName;
+	
 	private int winningScore;
 	private int winningChipCount;
 	
@@ -44,8 +46,8 @@ public class ResultSummary {
 	public State getNextState() {
 		return nextState;
 	}
-	public String getPlayerName() {
-		return playerName;
+	public String getActivePlayerName() {
+		return activePlayerName;
 	}
 	public int getRoundScore() {
 		return roundScore;
@@ -71,8 +73,8 @@ public class ResultSummary {
 	public void setNextState(State nextState) {
 		this.nextState = nextState;
 	}
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
+	public void setActivePlayerName(String playerName) {
+		this.activePlayerName = playerName;
 	}
 	
 	public void setRoll(Roll roll) {

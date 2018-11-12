@@ -25,32 +25,18 @@ public class TestController {
 	public void testControllerStart() {
 		assertEquals(State.PLAYING_TURN, control.currentState);
 	}
-	
-	@Test
-	public void testControllerHandlesInvalidResponse() {
-		control.currentState = State.INVALID_RESPONSE; 
-		ResultSummary result = control.doNextStep(null);
-		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
-	}
-	
+		
 	@Test
 	public void testControllerGetsInputPlaysTurn() {
-		control.currentState = State.WAITING_FOR_INPUT; 
+		control.currentState = State.PLAYING_TURN; 
 		Round round = mock(Round.class);
 		ResultSummary mockResult = new ResultSummary();
 		mockResult.setNextState(State.TURN_DONE);
-		when(round.playTurnStep("y")).thenReturn(mockResult);
+		when(round.playTurnStep(true)).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.doNextStep("y");
+		ResultSummary result = control.doNextStep(true);
 		assertEquals(State.TURN_DONE, result.getNextState());
-	}
-	
-	@Test
-	public void testControllerHandlesWaitForInputNull() {
-		control.currentState = State.WAITING_FOR_INPUT; 
-		ResultSummary result = control.doNextStep(null);
-		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
 	}
 	
 	@Test
@@ -62,7 +48,7 @@ public class TestController {
 		when(round.determineNextState()).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.doNextStep(null);
+		ResultSummary result = control.doNextStep(false);
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 	
@@ -71,14 +57,14 @@ public class TestController {
 		control.currentState = State.ROUND_DONE; 
 		players.get(0).setChipCount(100);
 		
-		ResultSummary result = control.doNextStep(null);
+		ResultSummary result = control.doNextStep(false);
 		assertEquals(State.GAME_DONE, result.getNextState());
 	}
 	
 	@Test
 	public void testControllerStartNewRound() {
 		control.currentState = State.ROUND_DONE; 		
-		ResultSummary result = control.doNextStep(null);
+		ResultSummary result = control.doNextStep(true);
 		assertEquals(State.PLAYING_TURN, result.getNextState());
 	}
 	
@@ -88,10 +74,10 @@ public class TestController {
 		Round round = mock(Round.class);
 		ResultSummary mockResult = new ResultSummary();
 		mockResult.setNextState(State.ROUND_DONE);
-		when(round.playTurnStep(null)).thenReturn(mockResult);
+		when(round.playTurnStep(true)).thenReturn(mockResult);
 		control.round = round;
 		
-		ResultSummary result = control.doNextStep(null);
+		ResultSummary result = control.doNextStep(true);
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 }

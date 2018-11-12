@@ -63,10 +63,10 @@ public class Round {
 		}
 	}
 
-	public ResultSummary playTurnStep(String input) {
+	public ResultSummary playTurnStep(boolean keepRolling) {		
 		Player active = players.get(activePlayerIndex);				
-		ResultSummary response = playTurnStep(active, input);
-		response.setPlayerName(active.getName());		
+		ResultSummary response = playTurnStep(active, keepRolling);
+		response.setActivePlayerName(active.getName());		
 		return response;
 	}
 	
@@ -74,61 +74,64 @@ public class Round {
 	 * Plays a turn for the active player until the turn is done or input is required
 	 * 
 	 */
-	private ResultSummary playTurnStep(Player activePlayer, String input) {
+	private ResultSummary playTurnStep(Player activePlayer, boolean keepRolling) {
 		ResultSummary response = new ResultSummary();
-		response.setNextState(State.PLAYING_TURN);		
+
 		if(currentTurn == null) {
 			currentTurn = new Turn();
-		}
-		
-		int turnScore = currentTurn.getTurnScore();				
-		
-		if(input == null) {			
-			response.setNextState(State.WAITING_FOR_INPUT);
-		}		
-		else if (input.equals("y")) {
+		}							
+		if (keepRolling) {
 			currentTurn.rollAgain();
 			currentTurn.scoreTurn();
-			response.setLastRoll(currentTurn.getLastRoll());
-			
-			turnScore = currentTurn.getTurnScore();
+			response.setLastRoll(currentTurn.getLastRoll());			
 			if (currentTurn.ends()) {
 				response.setNextState(State.TURN_DONE);
 			} else {
-				response.setNextState(State.WAITING_FOR_INPUT);
+				response.setNextState(State.PLAYING_TURN);
 			}
-		} else if (input.equals("n")) {
-			response.setNextState(State.TURN_DONE);
 		} else {
-			response.setNextState(State.INVALID_RESPONSE);
-		}						
-		
+			response.setNextState(State.TURN_DONE);
+		} 		
+				
+		int turnScore = currentTurn.getTurnScore();
 		if(response.getNextState() == State.TURN_DONE) {
-			if((currentTurn.getLastRoll() != null) 
-					&& (currentTurn.getLastRoll().isDoubleSkunk())) {
-				activePlayer.setRoundScore(0);
-			} else {
-				activePlayer.setRoundScore(activePlayer.getRoundScore() + turnScore);
-			}
-			activePlayer.setChipCount(activePlayer.getChipCount() + currentTurn.getChipChange());
-			roundKitty.setChipCount(roundKitty.getChipCount() + currentTurn.getKittyChange());
-			currentTurn = null;
-			if(!lastChance) {
-				checkForWinner();
-			}
+			finishTurn(activePlayer);			
 		}
-		response.setPlayerName(activePlayer.getName());
+		response.setActivePlayerName(activePlayer.getName());
 		response.setRoundScore(activePlayer.getRoundScore());
 		response.setTurnScore(turnScore);
 				
 		return response;
 	}
 
-	private void checkForWinner() {
-		if (players.get(activePlayerIndex).getRoundScore() >= WINNING_SCORE) {
+	/*
+	 * Finish the turn by adding up chips and checking for round winner
+	 */
+	private void finishTurn(Player activePlayer) {
+		if((currentTurn.getLastRoll() != null) 
+				&& (currentTurn.getLastRoll().isDoubleSkunk())) {
+			activePlayer.setRoundScore(0);
+		} else {
+			activePlayer.setRoundScore(activePlayer.getRoundScore() + currentTurn.getTurnScore());
+		}
+		activePlayer.setChipCount(activePlayer.getChipCount() + currentTurn.getChipChange());
+		roundKitty.setChipCount(roundKitty.getChipCount() + currentTurn.getKittyChange());
+		currentTurn = null;
+		
+		if(!lastChance && playerHasWinningScore(activePlayer)) {
 			firstWinnerIndex = activePlayerIndex;
 			lastChance = true;
 		}
+	}
+	
+	/*
+	 * Check if current player has reached a winning round score
+	 */
+	private boolean playerHasWinningScore(Player player) {
+		if (player.getRoundScore() >= WINNING_SCORE) {
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean roundDone() {
@@ -140,13 +143,19 @@ public class Round {
 		return false;
 	}
 	
+	/*
+	 * Returns true if each eligible player has finished the last chance round 
+	 */
 	public boolean lastChanceDone() {
-		if( activePlayerIndex == firstWinnerIndex) {
+		if( lastChance && (activePlayerIndex == firstWinnerIndex)) {
 			return true;
 		}
 		return false;
 	}
 
+	/*
+	 * Advance the active player index to the next in the list
+	 */
 	public void updateActivePlayer() {	
 		activePlayerIndex += 1;
 		if (activePlayerIndex > players.size() - 1) {
@@ -161,18 +170,19 @@ public class Round {
 		ResultSummary response = new ResultSummary();
 		if (!roundDone()) {
 			response.setNextState(State.PLAYING_TURN);
+			response.setRoundScore(this.players.get(activePlayerIndex).getRoundScore());
 		} else if (lastChance == true && !lastChanceDone()){
 			response.setNextState(State.LAST_CHANCE);
 		} else {
 			response.setNextState(State.ROUND_DONE);
 			Player winner = findWinner();
 			moveChips(winner);
-			response.setGameWinnerName(winner.getName());
+			response.setRoundWinnerName(winner.getName());
 			response.setWinningChipCount(winner.getChipCount());
 			response.setWinningScore(winner.getRoundScore());
 			response.setPlayers(players);			
 		}
-		response.setPlayerName(this.players.get(activePlayerIndex).getName());
+		response.setActivePlayerName(this.players.get(activePlayerIndex).getName());
 		return response;
 	}
 

@@ -65,6 +65,7 @@ public class TurnTest
 		turn.setLastRoll(roll);	
 		turn.scoreTurn();
 		assertEquals(true, turn.getLastRoll().isDoubleSkunk());
+		assertEquals(-4, turn.getChipChange());
 		assertEquals(0, turn.getTurnScore());
 		assertEquals(true, turn.ends());
 	}
@@ -77,6 +78,7 @@ public class TurnTest
 		turn.setLastRoll(roll);	
 		turn.scoreTurn();
 		assertEquals(true, turn.getLastRoll().isSingleSkunk());
+		assertEquals(-1, turn.getChipChange());
 		assertEquals(0, turn.getTurnScore());
 		assertEquals(true, turn.ends());
 	}
@@ -89,6 +91,7 @@ public class TurnTest
 		turn.setLastRoll(roll);	
 		turn.scoreTurn();
 		assertEquals(true, turn.getLastRoll().isDeuceSkunk());
+		assertEquals(-2, turn.getChipChange());
 		assertEquals(0, turn.getTurnScore());
 		assertEquals(true, turn.ends());
 	}				

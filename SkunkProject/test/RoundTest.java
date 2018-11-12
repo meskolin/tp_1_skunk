@@ -27,9 +27,9 @@ public class RoundTest
 	public void testPlayTurnStepCurrentTurnNull()
 	{
 		assertEquals(round.currentTurn, null);
-		ResultSummary result = this.round.playTurnStep(null);
+		ResultSummary result = this.round.playTurnStep(true);
 		assertNotNull(round.currentTurn);
-		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
+		assertEquals(State.PLAYING_TURN, result.getNextState());
 	}
 	
 	@Test
@@ -40,8 +40,8 @@ public class RoundTest
 		assertNotNull(round.currentTurn);
 		when(turn.ends()).thenReturn(false);
 		when(turn.getTurnScore()).thenReturn(4);
-		ResultSummary result = this.round.playTurnStep("y");		
-		assertEquals(State.WAITING_FOR_INPUT, result.getNextState());
+		ResultSummary result = this.round.playTurnStep(true);		
+		assertEquals(State.PLAYING_TURN, result.getNextState());
 		assertEquals(4, result.getTurnScore());
 	}
 	
@@ -55,7 +55,7 @@ public class RoundTest
 		assertNotNull(round.currentTurn);
 		when(turn.ends()).thenReturn(true);
 		when(turn.getLastRoll()).thenReturn(roll);
-		ResultSummary result = this.round.playTurnStep("y");
+		ResultSummary result = this.round.playTurnStep(true);
 		assertEquals(State.TURN_DONE, result.getNextState());
 		assertEquals(players.get(round.activePlayerIndex).getRoundScore(), 0);
 	}
@@ -67,7 +67,7 @@ public class RoundTest
 		round.currentTurn = turn;
 		assertNotNull(round.currentTurn);		
 		when(turn.ends()).thenReturn(true);
-		ResultSummary result = this.round.playTurnStep("y");		
+		ResultSummary result = this.round.playTurnStep(true);		
 		assertEquals(State.TURN_DONE, result.getNextState());
 	}
 	
@@ -77,21 +77,10 @@ public class RoundTest
 	{
 		Turn turn = mock(Turn.class);	
 		round.currentTurn = turn;
-		ResultSummary result = this.round.playTurnStep("n");		
+		ResultSummary result = this.round.playTurnStep(false);		
 		assertEquals(State.TURN_DONE, result.getNextState());
 	}
-	
-	@Test
-	public void testPlayTurnStepInvalidInput()
-	{
-		Turn turn = mock(Turn.class);	
-		round.currentTurn = turn;
-		assertNotNull(round.currentTurn);		
-		when(turn.ends()).thenReturn(true);
-		ResultSummary result = this.round.playTurnStep("foo");		
-		assertEquals(State.INVALID_RESPONSE, result.getNextState());
-	}
-	
+		
 	@Test
 	public void testPlayLastChance()
 	{
@@ -102,7 +91,7 @@ public class RoundTest
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		when(turn.ends()).thenReturn(true);	
 		round.lastChance = true;
-		ResultSummary result = this.round.playTurnStep("y");		
+		ResultSummary result = this.round.playTurnStep(true);		
 		assertEquals(State.TURN_DONE, result.getNextState());
 	}
 	
@@ -169,7 +158,7 @@ public class RoundTest
 		round.lastChance = true;
 		round.players.get(0).setRoundScore(round.WINNING_SCORE);
 		assertEquals(round.activePlayerIndex, 0);
-		round.playTurnStep("y");
+		round.playTurnStep(true);
 		round.updateActivePlayer();
 		ResultSummary result = round.determineNextState();
 		assertEquals(State.LAST_CHANCE, result.getNextState());
@@ -180,11 +169,14 @@ public class RoundTest
 	{
 		round.lastChance = true;
 		round.firstWinnerIndex = 0;
-		round.players.get(0).setRoundScore(round.WINNING_SCORE);
+		round.players.get(0).setRoundScore(round.WINNING_SCORE + 1);
 		round.activePlayerIndex = 2;
 		
 		round.updateActivePlayer();
-		ResultSummary result = round.determineNextState();
+		ResultSummary result = round.determineNextState();		
+		assertEquals(round.WINNING_SCORE + 1, result.getWinningScore());
+		assertEquals("Test player 1", result.getRoundWinnerName());
+		assertEquals(70, result.getWinningChipCount());
 		assertEquals(State.ROUND_DONE, result.getNextState());
 	}
 

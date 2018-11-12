@@ -5,10 +5,27 @@ import edu.princeton.cs.introcs.StdOut;
 
 public class SkunkUI {
 
-	public String getTurnInput() {
+	public Boolean getTurnInput() {
 		showOutput("Do you want to roll? (y/n): ");
-		return StdIn.readLine();
+		String input;
+		Boolean choice = false;
+		Boolean hasValidInput = false;
+		while(!hasValidInput) {
+			input = StdIn.readLine();
+			if(input.equalsIgnoreCase("y")) {
+				hasValidInput= true;
+				choice =  true;
+			} else if (input.equalsIgnoreCase("n")) {
+				choice = false;
+				hasValidInput= true;
+			} else {
+				showOutput("*************************");
+				showOutput("You entered an invalid response. \n");
+			}
+		}
+		return choice;					
 	}
+		
 
 	public void showOutput(String message) {
 		StdOut.println(message);
@@ -16,14 +33,13 @@ public class SkunkUI {
 
 	public void showResult(ResultSummary result) {
 
-		switch (result.getNextState()) {
-		case INVALID_RESPONSE:
+//		showOutput("currentState" + result.getCurrentState());
+//		showOutput("nextState" + result.getNextState());
+		
+		switch (result.getNextState()) {	
+		case PLAYING_TURN:
 			showOutput("*************************");
-			showOutput("You entered an invalid response. \n");
-			break;
-		case WAITING_FOR_INPUT:
-			showOutput("*************************");
-			showOutput("It is " + result.getPlayerName() + "'s turn");
+			showOutput("It is " + result.getActivePlayerName() + "'s turn");
 			if (result.getLastRoll() != null) {
 				showRoll(result.getLastRoll());
 			}							
@@ -35,13 +51,14 @@ public class SkunkUI {
 			if (result.getLastRoll() != null) {
 				showRoll(result.getLastRoll());
 			}
-			showOutput("Turn over for player " + result.getPlayerName());
+			showOutput("Turn over for player " + result.getActivePlayerName());
 			showOutput("Turn Score:" + result.getTurnScore());
 			showOutput("Round Score:" + result.getRoundScore());
 			break;
 		case LAST_CHANCE:
 			showOutput("*************************");
 			StdOut.println("Now its the last chance to win!");
+			showOutput("It is " + result.getActivePlayerName() + "'s turn");
 			break;
 		case ROUND_DONE:
 			showOutput("*************************");
@@ -87,6 +104,10 @@ public class SkunkUI {
 
 		GameParams params = new GameParams(playerList);
 		return params;
+	}
+	
+	public void showStartGameMessage(GameParams params) {
+		showOutput("Let's play! Player " + params.getPlayers().get(0).getName() + " goes first. ");
 	}
 
 }

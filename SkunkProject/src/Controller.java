@@ -14,34 +14,24 @@ public class Controller {
 		currentState = State.PLAYING_TURN;
 	}
 	
-	public ResultSummary doNextStep(String input) {
-		ResultSummary result = new ResultSummary();		
+	public ResultSummary doNextStep(boolean keepRolling) {
+		ResultSummary result = new ResultSummary();	
+		
 		switch (currentState) {
-		case INVALID_RESPONSE:
-			//Try to get input again
-			result.setNextState(State.WAITING_FOR_INPUT);
-			break;
-		case WAITING_FOR_INPUT:
-			if (input != null) {
-				result.setNextState(State.PLAYING_TURN);
-			} else {
-				// state stays the same
-				result.setNextState(State.WAITING_FOR_INPUT);				
-				break;
-			}
 		case PLAYING_TURN:
-			result = round.playTurnStep(input);
+			result = round.playTurnStep(keepRolling);
 			break;
 		case TURN_DONE:
 			round.updateActivePlayer();
 			result = round.determineNextState();
 			break;
 		case LAST_CHANCE:
-			result = round.playTurnStep(input);
+			result = round.playTurnStep(keepRolling);
 			break;
 		case ROUND_DONE:
 			if(!game.gameDone()) {
-				round = new Round(players);
+				round = new Round(players);		
+				result.setActivePlayerName(players.get(0).getName());
 				result.setNextState(State.PLAYING_TURN);
 			} else {
 				result.setGameWinnerName(game.getWinner());
