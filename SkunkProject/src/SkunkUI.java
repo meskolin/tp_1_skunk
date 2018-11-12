@@ -33,9 +33,6 @@ public class SkunkUI {
 
 	public void showResult(ResultSummary result) {
 
-//		showOutput("currentState" + result.getCurrentState());
-//		showOutput("nextState" + result.getNextState());
-		
 		switch (result.getNextState()) {	
 		case PLAYING_TURN:
 			showOutput("*************************");
