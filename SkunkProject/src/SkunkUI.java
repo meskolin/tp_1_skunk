@@ -20,7 +20,7 @@ public class SkunkUI {
 				hasValidInput= true;
 			} else {
 				showOutput("*************************");
-				showOutput("You entered an invalid response. \n");
+				showOutput("You entered an invalid response. Please enter (y/n) \n");
 			}
 		}
 		return choice;					
