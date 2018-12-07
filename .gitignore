@@ -1,2 +1,5 @@
 *.class
 /SkunkProject/bin
+/skunk-ui/node_modules
+/skunk-ui/app/**/*.js
+/skunk-ui/platforms
